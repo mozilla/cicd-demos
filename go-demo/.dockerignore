@@ -1,0 +1,9 @@
+# Exclude everything by default
+*
+
+# Except for Go source files and Go dependency files
+!**/*.go
+!go.mod
+!go.sum
+# Include our generated version.json file
+!version.json

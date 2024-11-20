@@ -35,7 +35,8 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.gcp-auth.outputs.access_token }}
       - name: Run the release script to build version.json file
-        run: ./go-demo/release.sh
+        working-directory: ./go-demo
+        run: ./release.sh
       - name: Build and push image
         uses: docker/build-push-action@v3
         with:

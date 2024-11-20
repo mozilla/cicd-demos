@@ -43,6 +43,7 @@ jobs:
           context: ./go-demo/
           tags: |
             ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

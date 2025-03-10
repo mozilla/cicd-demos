@@ -16,6 +16,6 @@ FROM gcr.io/distroless/static:nonroot
 COPY --from=builder /app/build/go-demo /app/go-demo
 COPY --from=builder /app/version.json /app/version.json
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["/app/go-demo"]

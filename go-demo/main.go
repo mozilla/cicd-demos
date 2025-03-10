@@ -46,7 +46,7 @@ func main() {
 		w.Write([]byte("Welcome to the cicd demo HTTP app! Visit /__version__ for version information."))
 	})
 
-	port := "8080"
+	port := "8000"
 	println("Server running on port:", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Println("Error starting server:", err)

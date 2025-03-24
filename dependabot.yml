@@ -1,0 +1,9 @@
+# Basic `dependabot.yml` file with Dockerfile updates
+
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    # Look for a `Dockerfile` in the `go-demo` directory
+    directory: "/go-demo"
+    schedule:
+      interval: "daily"

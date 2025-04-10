@@ -7,3 +7,6 @@
 !go.sum
 # Include our generated version.json file
 !version.json
+
+# Ignore generated credentials from google-github-actions/auth
+gha-creds-*.json

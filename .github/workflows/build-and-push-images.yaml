@@ -45,7 +45,7 @@ jobs:
         working-directory: ./go-demo
         run: ./release.sh
       - name: Build and push image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./go-demo/
           tags: |

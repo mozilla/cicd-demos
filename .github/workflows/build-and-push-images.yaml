@@ -1,6 +1,8 @@
 name: Go Demo -- Build and Push Container Image to GAR
 
 on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize]
   push:
     branches:
       - main
@@ -14,6 +16,14 @@ env:
 
 jobs:
   build-and-push:
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request' &&
+        contains(github.event.pull_request.labels.*.name, 'preview') &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -56,3 +66,4 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+

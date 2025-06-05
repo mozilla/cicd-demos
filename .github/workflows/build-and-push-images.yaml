@@ -59,9 +59,9 @@ jobs:
         with:
           context: ./go-demo/
           tags: |
-            ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.head.sha || github.sha }}
             ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
-            ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.head.sha || github.sha }}
             ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:latest
           push: true
           cache-from: type=gha

@@ -53,15 +53,16 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            tag=${{ github.ref_name }}"
+            tag="${{ github.ref_name }}"
           else
-            tag=$(git rev-parse --short=10 HEAD)"
+            tag="$(git rev-parse --short=10 HEAD)"
           fi
           # append metadata if present
           if [[ -n "${{ env.METADATA }}" ]]; then
             tag="${tag}--${{ env.METADATA }}"
           fi
-          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"        
+          echo "Setting IMAGE_TAG=${tag} as output"
+          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"    
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804

@@ -64,15 +64,19 @@ jobs:
         run: |
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             tag="${{ github.ref_name }}"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            tag="${{ github.event.pull_request.head.sha::0:10 }}"
           else
             tag="$(git rev-parse --short=10 HEAD)"
           fi
+
           # append metadata if present
           if [[ -n "${{ env.METADATA }}" ]]; then
             tag="${tag}--${{ env.METADATA }}"
           fi
+
           echo "Setting IMAGE_TAG=${tag} as output"
-          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"    
+          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804
@@ -83,7 +87,6 @@ jobs:
           tags: |
             type=raw,value=${{ steps.mozcloud-tag.outputs.IMAGE_TAG }}
             type=raw,value=latest
-            type=raw,value=${{ github.event.pull_request.head.sha || github.sha }}
       - name: Build and push image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
         with:

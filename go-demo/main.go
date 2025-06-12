@@ -43,7 +43,7 @@ func main() {
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to the cicd demo go web app! Visit /__version__ for version information."))
+		w.Write([]byte("Welcome to the cicd demo go web app! Visit /__version__ for version information. Adding test string here"))
 	})
 
 	port := "8000"

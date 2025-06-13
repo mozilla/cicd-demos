@@ -1,6 +1,8 @@
 name: Go Demo -- Build and Push Container Image to GAR
 
 on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize]
   push:
     branches:
       - main
@@ -16,6 +18,14 @@ env:
 
 jobs:
   build-and-push:
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request' &&
+        contains(github.event.pull_request.labels.*.name, 'preview') &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,6 +35,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-tags: true
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
       - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
       - id: gcp-auth
         name: Google authentication
@@ -57,12 +68,14 @@ jobs:
           else
             tag="$(git rev-parse --short=10 HEAD)"
           fi
+
           # append metadata if present
           if [[ -n "${{ env.METADATA }}" ]]; then
             tag="${tag}--${{ env.METADATA }}"
           fi
+
           echo "Setting IMAGE_TAG=${tag} as output"
-          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"    
+          echo "IMAGE_TAG=${tag}" >> "$GITHUB_OUTPUT"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804
@@ -83,3 +96,4 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+

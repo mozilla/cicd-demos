@@ -61,13 +61,9 @@ jobs:
       - name: Generate MozCloud Tag
         id: mozcloud-tag
         shell: bash
-        env:
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || '' }}
         run: |
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             tag="${{ github.ref_name }}"
-          elif [[ "${{ github.event_name }}" == "pull_request" && -n "$PR_HEAD_SHA" ]]; then
-            tag="${PR_HEAD_SHA:0:10}"
           else
             tag="$(git rev-parse --short=10 HEAD)"
           fi

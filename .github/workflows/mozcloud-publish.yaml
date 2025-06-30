@@ -36,7 +36,7 @@ jobs:
       run: ./release.sh
     - name: Build and Tag Container Image
       id: build
-      uses: mozilla/deploy-actions/docker-build@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v3.18.4
+      uses: mozilla/deploy-actions/docker-build@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v4.0.0
       with:
         image_name: go-demo
         gar_name: cicd-demos-nonprod
@@ -46,7 +46,7 @@ jobs:
 
     - name: Push Container Image to GAR and GHCR Repositories
       id: push
-      uses: mozilla-it/deploy-actions/docker-push@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v3.18.4
+      uses: mozilla-it/deploy-actions/docker-push@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v4.0.0
       with:
         image_tags: ${{ steps.build.outputs.image_tags }}
         should_authenticate_to_ghcr: true

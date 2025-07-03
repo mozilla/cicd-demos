@@ -20,35 +20,16 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'preview') &&
         github.event.pull_request.head.repo.full_name == github.repository
       )
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write # Only required if you're publishing to GHCR
-      id-token: write
-    steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      with:
-        fetch-tags: true
-        ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.ref }}
-    - name: Run the release script to build version.json file
-      id: release
-      working-directory: ./go-demo
-      run: ./release.sh
-    - name: Build and Tag Container Image
-      id: build
-      uses: mozilla/deploy-actions/docker-build@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v4.0.0
-      with:
-        image_name: go-demo
-        gar_name: cicd-demos-nonprod
-        project_id: moz-fx-cicd-demos-nonprod
-        should_tag_ghcr: true
-        image_build_context: "./go-demo/"
-
-    - name: Push Container Image to GAR and GHCR Repositories
-      id: push
-      uses: mozilla-it/deploy-actions/docker-push@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v4.0.0
-      with:
-        image_tags: ${{ steps.build.outputs.image_tags }}
-        should_authenticate_to_ghcr: true
-        project_id: moz-fx-cicd-demos-nonprod
-        workload_identity_pool_project_number: ${{ vars.GCPV2_WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER }}
+      id-token: write        
+    secrets: inherit
+    uses: mozilla-it/deploy-actions/.github/workflows/build-and-push.yml@main
+    with:
+      image_name: go-demo
+      gar_name: cicd-demos-nonprod
+      project_id: moz-fx-cicd-demos-nonprod
+      should_tag_ghcr: true
+      image_build_context: "./go-demo/"
+      prebuild_script: "cd go-demo && ./release.sh"

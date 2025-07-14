@@ -36,7 +36,7 @@ jobs:
       run: ./release.sh
     - name: Build and Tag Container Image
       id: build
-      uses: mozilla/deploy-actions/docker-build@f6e53875d3aff6c2dc4d3499643004376abe0a8a # v4.0.0
+      uses: mozilla/deploy-actions/docker-build@f069ae79ba14509a512a9a0fecc65123740bfb51 # v4.0.2
       with:
         image_name: go-demo
         gar_name: cicd-demos-nonprod

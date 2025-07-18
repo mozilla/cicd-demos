@@ -14,6 +14,7 @@ GITHUB_REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 GITHUB_ACTION_RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+    GITHUB_REF_NAME=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
 fi
 
 # Generate version.json

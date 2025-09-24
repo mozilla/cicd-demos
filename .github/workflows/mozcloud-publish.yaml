@@ -22,7 +22,6 @@ jobs:
       )
     permissions:
       contents: read
-      packages: write # Only required if you're publishing to GHCR
       id-token: write        
     secrets: inherit
     uses: mozilla-it/deploy-actions/.github/workflows/build-and-push.yml@remove-reusable-action-permissions
@@ -30,7 +29,7 @@ jobs:
       image_name: go-demo
       gar_name: cicd-demos-nonprod
       project_id: moz-fx-cicd-demos-nonprod
-      should_tag_ghcr: true
+      should_tag_ghcr: false
       image_build_context: "./go-demo/"
       dockerfile_path: "./go-demo/Dockerfile"
       prebuild_script: "cd go-demo && ./release.sh"

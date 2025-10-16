@@ -13,9 +13,13 @@ RUN CGO_ENABLED=0 go build -v -o build ./...
 
 FROM gcr.io/distroless/static:nonroot
 
+COPY --from=busybox:uclibc /bin/wget /usr/local/bin/wget
 COPY --from=builder /app/build/go-demo /app/go-demo
 COPY --from=builder /app/version.json /app/version.json
 
 EXPOSE 8000
+
+HEALTHCHECK --interval=3s --timeout=1s \
+    CMD ["/usr/local/bin/wget", "--no-verbose", "--tries=1" , "--spider", "http://localhost:8000/__lbheartbeat__"]
 
 CMD ["/app/go-demo"]

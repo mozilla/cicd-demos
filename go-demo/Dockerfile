@@ -6,7 +6,7 @@ COPY go.* ./
 
 RUN go mod download
 
-COPY . .
+COPY main.go version.json ./
 
 RUN mkdir -p build
 RUN CGO_ENABLED=0 go build -v -o build ./...

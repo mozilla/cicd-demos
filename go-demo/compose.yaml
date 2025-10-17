@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    image: mozilla/go-demo
+    image: go-demo
     pull_policy: never
     environment:
       POSTGRES_DSN: postgres://user:password@postgres:5432/test?sslmode=disable

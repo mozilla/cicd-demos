@@ -5,7 +5,7 @@ help:
 # Always (re)generate version.json via a phony "version" step so builds
 # get fresh metadata even if version.json already exists.
 .PHONY: version
-version.json: ## Generate/refresh version.json metadata
+version: ## Generate/refresh version.json metadata
 	@scripts/build-version
 
 .PHONY: docker-build

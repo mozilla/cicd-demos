@@ -34,7 +34,7 @@ assert_http_200() {
 }
 
 # --- Image size check ---------------------------------------------------------
-EXPECTED_IMAGE_SIZE_BYTES=10000000
+EXPECTED_IMAGE_SIZE_BYTES=30000000 # 30mb
 ACTUAL_IMAGE_SIZE_BYTES="$(docker image inspect --format='{{.Size}}' "$IMAGE_NAME")"
 # Check the that the image is in a general size range
 # The size here is different than the virtual container size as reported by

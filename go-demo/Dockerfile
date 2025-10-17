@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 go build -v -o build ./...
 
 FROM gcr.io/distroless/static:nonroot
 
-COPY --from=busybox:uclibc /bin/wget /usr/local/bin/wget
+COPY --from=busybox:1.37.0-uclibc /bin/wget /usr/local/bin/wget
 COPY --from=builder /app/build/go-demo /app/go-demo
 COPY --from=builder /app/version.json /app/version.json
 

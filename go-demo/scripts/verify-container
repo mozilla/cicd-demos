@@ -11,7 +11,7 @@ trap cleanup EXIT
 
 # --- Config -------------------------------------------------------------------
 
-IMAGE_NAME="mozilla/go-demo"
+IMAGE_NAME="go-demo"
 
 LBHEARTBEAT_URL="${LBHEARTBEAT_URL:-http://localhost:8000/__lbheartbeat__}"
 HEARTBEAT_URL="${HEARTBEAT_URL:-http://localhost:8000/__heartbeat__}"

@@ -15,6 +15,7 @@ IMAGE_NAME="go-demo"
 
 LBHEARTBEAT_URL="${LBHEARTBEAT_URL:-http://localhost:8000/__lbheartbeat__}"
 HEARTBEAT_URL="${HEARTBEAT_URL:-http://localhost:8000/__heartbeat__}"
+VERSION_URL="${VERSION_URL:-http://localhost:8000/__version__}"
 
 
 assert_http_200() {
@@ -50,6 +51,17 @@ fi
 # --- Start only server container and check LB heartbeat -----------
 docker compose --progress=quiet up --detach --wait --no-deps web
 assert_http_200 "LB heartbeat" "$LBHEARTBEAT_URL"
+
+# --- Check version endpoint ------------------------------------------
+VERSION_RESPONSE="$(curl --silent --show-error "$VERSION_URL")"
+for field in "source" "version" "commit" "build"; do
+  VALUE="$(echo "$VERSION_RESPONSE" | jq -r ".${field}" 2>/dev/null || echo "")"
+  if [[ -z "$VALUE" ]] || [[ "$VALUE" == "null" ]]; then
+    echo "Version check failed: field '$field' is missing or empty"
+    exit 1
+  fi
+done
+echo "Version object present and matches schema!"
 
 # --- Start all services and check app heartbeat -------------------
 docker compose --progress=quiet up --detach --wait

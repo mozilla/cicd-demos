@@ -23,7 +23,7 @@ jobs:
     permissions:
       contents: read
       packages: write # Only required if you're publishing to GHCR
-      id-token: write        
+      id-token: write
     secrets: inherit
     uses: mozilla-it/deploy-actions/.github/workflows/build-and-push.yml@main
     with:
@@ -33,4 +33,5 @@ jobs:
       should_tag_ghcr: true
       image_build_context: "./go-demo/"
       dockerfile_path: "./go-demo/Dockerfile"
-      prebuild_script: "cd go-demo && ./release.sh"
+      prebuild_script: "cd go-demo && make mozcloud-prebuild"
+      postbuild_script: "cd go-demo && make mozcloud-postbuild"

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Generate version.json file following our dockerflow standards
+# "source" : "https://github.com/mozilla-services/Dockerflow",
+# "version": "release tag or string for humans",
+# "commit" : "<git hash>",
+# "build"  : "uri to CI build job"
+# "date"   : "build date of image"
+# Exit immediately if a command exits with a non-zero status
+
+DATE_EPOCH=$(date +%s)
+
+# Detect if running in GitHub Actions
+if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+  SOURCE="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+  BUILD_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+  REF_NAME="${GITHUB_REF_NAME:-unknown}"
+  COMMIT="${GITHUB_SHA:-unknown}"
+
+  # Handle pull requests explicitly
+  if [[ "${GITHUB_EVENT_NAME:-}" == "pull_request" && -f "${GITHUB_EVENT_PATH:-}" ]]; then
+    COMMIT=$(jq -r '.pull_request.head.sha' < "$GITHUB_EVENT_PATH")
+    REF_NAME=$(jq -r '.pull_request.head.ref' < "$GITHUB_EVENT_PATH")
+  fi
+else
+  # Local defaults
+  SOURCE="mozilla/cicd-demos"
+  BUILD_URL="local"
+  REF_NAME=$(git describe --tags --always 2>/dev/null || echo "local")
+  COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
+fi
+
+# Generate version.json
+cat > version.json <<EOF
+{
+  "source": "$SOURCE",
+  "version": "$REF_NAME",
+  "commit": "$COMMIT",
+  "build": "$BUILD_URL",
+  "date": "$DATE_EPOCH"
+}
+EOF

@@ -25,9 +25,7 @@ jobs:
       packages: write # Only required if you're publishing to GHCR
       id-token: write
     uses: mozilla-it/deploy-actions/.github/workflows/build-and-push.yml@wiz-scanning
-    secrets:
-      WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
-      WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+    secrets: inherit
     with:
       image_name: go-demo
       gar_name: cicd-demos-nonprod

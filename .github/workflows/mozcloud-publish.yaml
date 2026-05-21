@@ -31,6 +31,7 @@ jobs:
       gar_name: cicd-demos-nonprod
       project_id: moz-fx-cicd-demos-nonprod
       should_tag_ghcr: true
+      should_tag_latest: true
       image_build_context: "./go-demo/"
       dockerfile_path: "./go-demo/Dockerfile"
       prebuild_script: "cd go-demo && make mozcloud-prebuild"

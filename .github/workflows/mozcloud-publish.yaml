@@ -25,7 +25,7 @@ jobs:
       packages: write # Only required if you're publishing to GHCR
       id-token: write
     secrets: inherit
-    uses: mozilla/deploy-actions/.github/workflows/build-and-push.yml@f7f886627a7914358ff56dda226419e1df90ca40 #v6.5.4
+    uses: mozilla/deploy-actions/.github/workflows/build-and-push.yml@20256256ac0d19735926dc7975a86dbbb7a06e5f #v6.6.3
     with:
       image_name: go-demo
       gar_name: cicd-demos-nonprod
